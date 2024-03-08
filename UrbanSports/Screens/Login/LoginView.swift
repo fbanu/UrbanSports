@@ -11,13 +11,11 @@ import SwiftUI
 struct LoginView: View {
     
     @Binding var isActive: Bool
-    @State private var email: String = ""
-    @State private var password: String = ""
     @ObservedObject var viewModel = LoginViewModel()
     
     var isLoginEnabled: Bool {
         return viewModel.usernameErrorMessage == nil && viewModel.passwordErrorMessage == nil &&
-        !viewModel.username.isEmpty && !viewModel.password.isEmpty
+        !viewModel.email.isEmpty && !viewModel.password.isEmpty
     }
     
     init(isActive: Binding<Bool>) {
@@ -44,7 +42,7 @@ struct LoginView: View {
                         .padding(.bottom, 30)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    CustomTextField(title: "Email", text: $viewModel.username, placeholder: "Enter your email", errorMessage: viewModel.usernameErrorMessage)
+                    CustomTextField(title: "Email", text: $viewModel.email, placeholder: "Enter your email", errorMessage: viewModel.usernameErrorMessage)
                     
                     
                     CustomTextField(title: "Password", text: $viewModel.password, placeholder: "Enter your password", isSecure: true, errorMessage: viewModel.passwordErrorMessage)

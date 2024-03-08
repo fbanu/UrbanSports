@@ -11,14 +11,12 @@ import SwiftUI
 struct RegisterView: View {
     
     @Binding var isActive: Bool
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @ObservedObject var viewModel = LoginViewModel()
+    @ObservedObject var viewModel = RegisterViewModel()
     @Environment(\.presentationMode) var presentationMode
     
     var isLoginEnabled: Bool {
         return viewModel.usernameErrorMessage == nil && viewModel.passwordErrorMessage == nil &&
-        !viewModel.username.isEmpty && !viewModel.password.isEmpty
+        !viewModel.email.isEmpty && !viewModel.password.isEmpty
     }
     
     var body: some View {
@@ -33,22 +31,21 @@ struct RegisterView: View {
                         .padding(.bottom, 30)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    CustomTextField(title: "Email", text: $viewModel.username, placeholder: "Enter your email", errorMessage: viewModel.usernameErrorMessage)
+                    CustomTextField(title: "Email", text: $viewModel.email, placeholder: "Enter your email", errorMessage: viewModel.usernameErrorMessage)
                     
-                    CustomTextField(title: "Name", text: $viewModel.username, placeholder: "Enter your full name", errorMessage: viewModel.usernameErrorMessage)
+                    CustomTextField(title: "Name", text: $viewModel.name, placeholder: "Enter your full name", errorMessage: viewModel.nameErrorMessage)
                     
                     CustomTextField(title: "Password", text: $viewModel.password, placeholder: "Enter your password", isSecure: true, errorMessage: viewModel.passwordErrorMessage)
                     
-                    CustomTextField(title: "Confirm Password", text: $viewModel.password, placeholder: "Enter your password", isSecure: true, errorMessage: viewModel.passwordErrorMessage)
+                    CustomTextField(title: "Confirm Password", text: $viewModel.confirmPassword, placeholder: "Enter your password", isSecure: true, errorMessage: viewModel.confirmPasswordErrorMessage)
                     
                     // Login button
                     CustomButton(title: "REGISTER", style: .filled, action: {
-                        viewModel.login()
-                        // self.areYouGoingToSecondView = true // Step 4
+                        viewModel.register()
                     })
                     .padding(.top, 20)
-                    .disabled(!isLoginEnabled)
-                    .opacity(isLoginEnabled ? 1.0 : 0.5)
+                    .disabled(!(viewModel.isRegisterButtonEnabled ?? false))
+                    .opacity((viewModel.isRegisterButtonEnabled ?? false) ? 1.0 : 0.5)
                     
                     VStack {
                         ZStack {
